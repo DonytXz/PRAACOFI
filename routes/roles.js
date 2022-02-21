@@ -93,7 +93,12 @@ router.get(
   }
 );
 
-
+router.use(require('./login'));
+router.use(require('./register'));
+router.use(require('./citas'));
+router.use(require('./perfil'));
+router.use(require('./motivos'));
+router.use(require('./area'));
 
 
 module.exports = router;
