@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Usuario = mongoose.model('Usuario');
+const Usuario = mongoose.model('users');
 
 const CitasSchema = new Schema({
-    usuario: { type: Schema.ObjectId, ref: 'Usuario'},
+    usuario: { type: Schema.ObjectId, ref: 'users'},
     motivo: String,
     fecha_cita: Date,
     hora: String,

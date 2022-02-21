@@ -3,9 +3,16 @@ const citas = require('../models/citas');
 const CitasModel = require('../models/citas');
 const usuario = require('../models/usuario');
 const moment = require('moment');
+const {
+  userAuth,
+  userLogin,
+  checkRole,
+  userRegister,
+  serializeUser
+} = require("../utils/Auth");
 
 //Create appointment
-
+/* 
 router.post('/registro_cita', async(req, res)=>{
     let citas = await CitasModel.findOne({usuario: req.body.usuario})
     // if(!citas)return res.status(400).send('');
@@ -21,7 +28,7 @@ router.post('/registro_cita', async(req, res)=>{
         citas.save();
         res.status(201).send(citas);
 
-});
+}); */
 
   //Get one 
 
@@ -64,7 +71,10 @@ router.put('/modificar_cita/:id', async (req, res) => {
 
 //Delete 
 
-router.delete("/citas/:id", (req, res) => {
+router.delete("/citas/:id", 
+userAuth,
+checkRole(["superadmin"]),
+async (req, res) => {
   const { id } = req.params;
   CitasModel
     .remove({ _id: id })
