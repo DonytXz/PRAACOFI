@@ -14,7 +14,7 @@ app.post("/register", function (req, res) {
     nombre,
     email,
     password: bcrypt.hashSync(password, 10),
-    role,
+    role
   });
 
   usuario.save((err, usuarioDB) => {
