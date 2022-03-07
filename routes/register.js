@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const Usuario = require("./../models/usuario");
 const app = express();
-const roles = require("./../models/roles");
+
 
 //Create user
 
