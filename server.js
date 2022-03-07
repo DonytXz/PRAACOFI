@@ -1,4 +1,4 @@
-/* require('./config/config');
+require('./config/config');
 
 const express = require('express')
 const app = express()
@@ -10,14 +10,10 @@ const cors = require("cors");
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-  next();
-});
-
+var corsOptions = {
+  origin: "http://localhost:3000"
+};
+app.use(cors(corsOptions));
 
 // parse application/json
 app.use(bodyParser.json())
@@ -32,6 +28,7 @@ app.get('/', function (req, res) {
 })
 
 
+
 mongoose.connect(process.env.URLDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -42,9 +39,9 @@ mongoose.connect(process.env.URLDB, {
 
 app.listen(process.env.PORT, () => {
   console.log("Escuchando en puerto 4201");
-}) */
+})
 
-
+/*
 const cors = require("cors");
 const exp = require("express");
 const bp = require("body-parser");
@@ -94,4 +91,4 @@ const startApp = async () => {
   }
 };
 
-startApp();
+startApp();*/
