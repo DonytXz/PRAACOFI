@@ -24,7 +24,7 @@ router.get('/:_id/citas', async function(req, res){
 })
 
   //Get one 
-  router.get('/citas', async (req, res)=>{
+  router.get('/citas/:id', async (req, res)=>{
     const { id } = req.params;
     CitasModel
     .findById(id)
