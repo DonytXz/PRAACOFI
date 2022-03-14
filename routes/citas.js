@@ -18,7 +18,7 @@ router.post('/registro_cita/:_id', async function(req, res){
 });
 
 //Get apointment of user
-router.get('/citas/:_id', async function(req, res){
+router.get('/:_id/citas', async function(req, res){
     const user = await usuario.findById(req.params).populate('citas');
     res.send(user);
 })
