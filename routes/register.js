@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const Usuario = require("./../models/usuario");
 const app = express();
 
-
 //Create user
 
 app.post("/register", function (req, res) {
@@ -32,7 +31,6 @@ app.post("/register", function (req, res) {
   });
 });
 
-
 //Get all users
 
 app.get("/mostrar_usuarios", async (req, res) => {
@@ -46,26 +44,50 @@ app.get("/mostrar_usuarios", async (req, res) => {
     .catch((err) => res.json({ succes: false, result: err }));
 });
 
+//Get one
 
- //Get one 
-
- app.get('/user/:id', async (req, res)=>{
+app.get("/user/:id", async (req, res) => {
   const { id } = req.params;
-  Usuario
-  .findById(id)
-  .then((data)=> res.json(data))
-  .catch((error) => res.json({ message: error}));
+  Usuario.findById(id)
+    .then((data) => res.json(data))
+    .catch((error) => res.json({ message: error }));
 });
 
-
-//Delete user 
+//Delete user
 
 app.delete("/user/:id", (req, res) => {
   const { id } = req.params;
-  Usuario
-    .remove({ _id: id })
+  Usuario.remove({ _id: id })
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
+});
+
+// Edit user
+app.put("/user/edit/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await Usuario.findById(id);
+    if (!user) {
+      return res.status(400).json({
+        message: "el usuario no existe",
+      });
+    }
+    const { password } = req.body;
+    const data = {
+      nombre: req.body.nombre,
+      password: bcrypt.hashSync(password, 10),
+      email: req.body.email,
+      role: req.body.role,
+    };
+    await Usuario.findByIdAndUpdate({ _id: id }, data);
+    return res.status(200).json({
+      data: await Usuario.findById(id),
+    });
+  } catch (error) {
+    return res.send({
+      data: user,
+    });
+  }
 });
 
 module.exports = app;
