@@ -10,14 +10,10 @@ const cors = require("cors");
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-  next();
-});
-
+var corsOptions = {
+  origin: ["http://localhost:3000", "http://localhost:3001"]
+};
+app.use(cors(corsOptions));
 
 // parse application/json
 app.use(bodyParser.json())
@@ -32,6 +28,7 @@ app.get('/', function (req, res) {
 })
 
 
+
 mongoose.connect(process.env.URLDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -43,3 +40,55 @@ mongoose.connect(process.env.URLDB, {
 app.listen(process.env.PORT, () => {
   console.log("Escuchando en puerto 4201");
 })
+
+/*
+const cors = require("cors");
+const exp = require("express");
+const bp = require("body-parser");
+const passport = require("passport");
+const { connect } = require("mongoose");
+const { success, error } = require("consola");
+
+// Bring in the app constants
+const { DB, PORT } = require("./config/config");
+
+// Initialize the application
+const app = exp();
+
+// Middlewares
+app.use(cors());
+app.use(bp.json());
+app.use(passport.initialize());
+
+require("./middlewares/passport")(passport);
+
+// User Router Middleware
+app.use("/api/users", require("./routes/roles"));
+
+const startApp = async () => {
+  try {
+    // Connection With DB
+    await connect(DB, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true
+    });
+
+    success({
+      message: `Successfully connected with the Database \n${DB}`,
+      badge: true
+    });
+
+    // Start Listenting for the server on PORT
+    app.listen(PORT, () =>
+      success({ message: `Server started on PORT ${PORT}`, badge: true })
+    );
+  } catch (err) {
+    error({
+      message: `Unable to connect with Database \n${err}`,
+      badge: true
+    });
+    startApp();
+  }
+};
+
+startApp();*/

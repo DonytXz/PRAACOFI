@@ -27,6 +27,10 @@ let usuarioSchema = new Schema({
         required: [true],
         enum: rolesValidos,
     },
+    citas:[{
+        type: Schema.Types.ObjectId,
+        ref: 'citas'
+    }]
 });
 
 // elimina la key password del objeto que retorna al momento de crear un usuario
@@ -38,8 +42,5 @@ usuarioSchema.methods.toJSON = function() {
     return userObject;
 }
 
-usuarioSchema.plugin(uniqueValidator, {
-    message: '{PATH} debe de ser único'
-})
 
 module.exports = mongoose.model('Usuario', usuarioSchema);
