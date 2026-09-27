@@ -10,10 +10,13 @@ const cors = require("cors");
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // CORS
-var corsOptions = {
-  origin: ["http://localhost:3000", "http://localhost:3001"]
-};
-app.use(cors(corsOptions));
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+  : '*';
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
 // parse application/json
 app.use(bodyParser.json())
@@ -21,25 +24,28 @@ app.use(bodyParser.json())
 // Configuracion global de rutas
 app.use(require('./routes/index'));
 
-let renderHTML = path.resolve(__dirname, '../public/index.html');
-
 app.get('/', function (req, res) {
-  res.sendFile(renderHTML);
-})
-
-
+  res.json({
+    status: 'online',
+    service: 'PRAACOFI API',
+    uptime: process.uptime(),
+    timestamp: new Date()
+  });
+});
 
 mongoose.connect(process.env.URLDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}, (err) => {
-  if (err) throw err;
+}).then(() => {
   console.log("Base de datos online");
+  const PORT = process.env.PORT || 4201;
+  app.listen(PORT, () => {
+    console.log(`Escuchando en puerto ${PORT}`);
+  });
+}).catch(err => {
+  console.error("Error al conectar con la base de datos:", err);
+  process.exit(1);
 });
-
-app.listen(process.env.PORT, () => {
-  console.log("Escuchando en puerto 4201");
-})
 
 /*
 const cors = require("cors");

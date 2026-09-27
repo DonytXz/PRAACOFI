@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // ===========================
 // Puerto
 // ===========================
@@ -14,22 +16,17 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 // BASE DE DATOS
 // ===========================
 
-let urlDB = "mongodb+srv://xAlexei:Palacios12@cluster0.66sqe.mongodb.net/universidad?retryWrites=true&w=majority";
-
-if (process.env.NODE_ENV === 'dev') {
-    urlDB = "mongodb+srv://xAlexei:Palacios12@cluster0.66sqe.mongodb.net/universidad?retryWrites=true&w=majority";
-} else {
-    urlDB = ""
-};
-
-process.env.URLDB = urlDB;
-
+process.env.URLDB = process.env.URLDB || process.env.MONGODB_URI || (
+  process.env.NODE_ENV === 'dev'
+    ? "mongodb+srv://xAlexei:Palacios12@cluster0.66sqe.mongodb.net/universidad?retryWrites=true&w=majority"
+    : "mongodb://localhost:27017/praacofi"
+);
 
 // ===========================
 // Vencimiento de token
 // ===========================
 
-process.env.CADUCIDAD_TOKEN = '48h';
+process.env.CADUCIDAD_TOKEN = process.env.CADUCIDAD_TOKEN || '48h';
 
 // ===========================
 // SEED de autenticación
