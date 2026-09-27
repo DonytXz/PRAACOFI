@@ -6,8 +6,6 @@ const app = express();
 //Create user
 
 app.post("/register", function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-
   let body = req.body;
   let { nombre, email, password, role } = body;
   let usuario = new Usuario({

@@ -6,7 +6,6 @@ const app = express();
 
 app.post('/login', function (req, res) {
 
-    res.header("Access-Control-Allow-Origin", "*");
     let body = req.body;
 
     Usuario.findOne({ email: body.email }, (erro, usuarioDB)=>{
@@ -61,7 +60,6 @@ app.post('/login', function (req, res) {
 
 app.post('/loginc', function (req, res) {
 
-    res.header("Access-Control-Allow-Origin", "*");
     let body = req.body;
 
         Contador.findOne({ email: body.email }, (erro, usuarioDB)=>{

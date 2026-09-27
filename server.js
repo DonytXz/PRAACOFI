@@ -10,9 +10,16 @@ const cors = require("cors");
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // CORS
+const defaultOrigins = [
+  'https://donatoalvarez.dev',
+  'https://donytxz.github.io',
+  'http://localhost:3000',
+  'http://localhost:4200',
+  'http://localhost:5173'
+];
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
-  : '*';
+  : defaultOrigins;
 app.use(cors({
   origin: allowedOrigins,
   credentials: true
