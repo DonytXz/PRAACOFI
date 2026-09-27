@@ -47,6 +47,8 @@ mongoose.connect(process.env.URLDB, {
   process.exit(1);
 });
 
+module.exports = app;
+
 /*
 const cors = require("cors");
 const exp = require("express");
