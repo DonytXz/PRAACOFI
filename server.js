@@ -9,31 +9,14 @@ const cors = require("cors");
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// CORS with dynamic origin reflection to support credentials safely
+// CORS
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+  : '*';
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow non-browser requests (Postman, curl, server-to-server)
-    if (!origin) return callback(null, true);
-
-    // If specific origins are defined in CORS_ORIGIN, check them
-    if (process.env.CORS_ORIGIN && process.env.CORS_ORIGIN !== '*') {
-      const allowed = process.env.CORS_ORIGIN.split(',').map(o => o.trim().toLowerCase());
-      if (allowed.includes(origin.toLowerCase()) || allowed.includes('*')) {
-        return callback(null, origin);
-      }
-    }
-
-    // Default: reflect the requesting origin so credentials work without wildcard conflicts
-    return callback(null, origin);
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'token', 'Origin', 'Accept', 'X-Requested-With'],
-  optionsSuccessStatus: 200
+  origin: allowedOrigins,
+  credentials: true
 }));
-
-// Preflight handler
-app.options('*', cors());
 
 // parse application/json
 app.use(bodyParser.json())
